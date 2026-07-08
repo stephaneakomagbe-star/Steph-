@@ -5,14 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restauration</title>
     <style>
-         
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height:100vh;
+            background: #b4a9c3;
+            overflow-y: 20px;
+            margin:0;
+            font-family: 'segoe UI',Arial, sans-serif;
+            background: linear-gradient(135deg, #2c1e3d, #b4a9c3);
+        }
+        .contactform{
+            background: #fff;
+            width: 450px;
+            max-height: 90vh;
+            box-shadow: 0 0 20px #7429ec; 
+            overflow-y: auto;
+            display:flex;
+            flex-direction:column;
+            padding: 35px 40px;
+            display: flex;
+            flex-direction: column; 
+            gap: 18px;
+        }
+        .contactform .contactf{
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .contactf label{
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+        .contactf input, 
+        .message textarea{
+            padding: 10px 12px;
+            border: 1px solid #d4c9e0;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .contactf input:focus,
+        .message textarea:focus{
+            border-color: #7429ec;
+        }
+        .message{
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .message label{
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        .btn-reservation{
+            margin-top: 10px;
+            padding: 12px;
+            background: #7429ec;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            transition: background 0.2s;
+        }
+        .btn-reservation:hover{
+            background: #5a1cb0;
+        }
     </style>
 </head>
 <body>
     <form>
         <div class="contactform">
             <div class="contactf">
-                <label>Jean KOSSI :</label>
+                <label>Nom :</label>
                 <input type="text" placeholder="Jean KOSSI" >
                 <br>
             </div>
@@ -30,7 +104,7 @@
             </div>
 
             <div class="contactf">
-                <label>Heure souhaité :</label>
+                <label>Heure :</label>
                 <input type="time" placeholder="Heure souhaitée">
                 <br>
             </div>
@@ -46,7 +120,7 @@
             <textarea placeholder="Entrez votre message" ></textarea>
             <br>
 
-            <a href="#" class="btn-réserver">Réserver</a>
+            <a href="#" class="btn-reservation">Réserver</a>
         </div>
         </div>
     </form>
