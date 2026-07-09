@@ -5,26 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restauration</title>
     <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing:border-box;
+            font-family: 'poppins', sans-serif;
+        }
         body{
             display: flex;
             justify-content: center;
             align-items: center;
             min-height:100vh;
-            background: #b4a9c3;
-            overflow-y: 20px;
-            margin:0;
-            font-family: 'segoe UI',Arial, sans-serif;
-            background: linear-gradient(135deg, #2c1e3d, #b4a9c3);
+            background-color: #524f4f;
+        }
+        .logo-retour span{
+            color: #fb911f;
         }
         .contactform{
-            background: #fff;
+            background: #fb911f;
+            padding: 50px 45px;
             width: 450px;
             max-height: 90vh;
-            box-shadow: 0 0 20px #7429ec; 
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5); 
             overflow-y: auto;
             display:flex;
             flex-direction:column;
-            padding: 35px 40px;
             display: flex;
             flex-direction: column; 
             gap: 18px;
@@ -64,21 +69,24 @@
             font-size: 14px;
         }
         .btn-reservation{
-            margin-top: 10px;
-            padding: 12px;
-            background: #7429ec;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
+            width: 100%;
+            font-size: 1em;
+            font-weight: 700;
             text-align: center;
+            color: #fff;
+            background: #111;
+            padding: 12px;
             display: block;
-            transition: background 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 2px;
+            outline: none;
+            border: none;
+            transition: 0.5s;
         }
         .btn-reservation:hover{
-            background: #5a1cb0;
+            background: #fff;
+            color:#111;
         }
     </style>
 </head>
