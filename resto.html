@@ -9,9 +9,6 @@
     <meta name="google-site-verification" content="nWpNoiSkI4Rk2WIMK4qWrguLRanqa76QBu1TOyJBVHI" />
     <title>Resto</title>
     <style>
-        body{
-            background-color: #524f4f;
-        }
         *{
             margin: 0px;
             padding: 0px;
@@ -149,9 +146,6 @@
             color: #fff;
             font-family: bold ;
         }
-        section{
-            padding: 100px;
-        }
 
         .row{
            position: relative;
@@ -187,8 +181,13 @@
             height: 450px;
             width: 600px;
             position: relative;
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5); 
+            border: 20px solid #fff;
         }
-
+        .apropo{
+            background-color: #f5ead9;
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5); 
+        }
         .titre{
             display: flex;
             width: 100%;
@@ -198,12 +197,14 @@
         }
         .menu{
             margin-top: -100px;
+            background-color: #f5ead9;
         }
         .menu .contenu{
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             margin-top: 40px;
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5); 
         }
         .titre .but{
             color: #fff;
@@ -213,8 +214,8 @@
         .menu .contenu .box{
             width: 350px;
             margin: 20px;
-            border: 20px solid fff;
-            box-shadow: 20px 15px 35px rgba(0,0,0 0,8);
+            border: 20px solid #fff;
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5); 
         }
         .menu .contenu .box .imbox{
             position: relative;
@@ -236,21 +237,27 @@
         }
         .menu .contenu .box .text h3{
             font-weight: 400;
+            color: #111;
+            font-style:italic;
+            font-weight: bold;
         }
         .expert{
             margin-top: -100px;
+            background-color: #f5ead9;
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5); 
         }
         .expert .contenu{
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             margin-top: 40px;
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5);
         }
         .expert .contenu .box{
             width: 350px;
             margin: 20px;
-            border: 20px solid fff;
-            box-shadow: 20px 15px 35px rgba(0,0,0 0,8);
+            border: 20px solid #fff;
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5);
         }
         .expert .contenu .box .imbox{
             position: relative;
@@ -271,10 +278,12 @@
             color: #111;
         }
         .expert .contenu .box .text h3{
-            font-weight: 400;
+            font-style:italic;
+            font-weight: bold;
         }
         .temoignage{
             background-size: cover;
+            background-color: #f5ead9;
         }
         .temoignage .contenu{
             display: flex;
@@ -284,6 +293,7 @@
             align-items: center;
             flex-wrap: wrap;
             flex-direction: row;
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.5);
         }
         .temoignage .contenu .box{
             width: 340px;
@@ -295,6 +305,7 @@
             flex-direction: column;
             border-radius: 15px;
             padding: 40px;
+            border: 20px solid #fff;
         }
         .temoignage .contenu .box .imbox{
             width: 80px;
@@ -333,16 +344,17 @@
             color: #000;
         }
         .contact{
-            box-shadow: 2px 2px 12px rgba(0,0,0 0.8);
+            box-shadow: 2px 2px 12px rgba(0,0,0, 0.8);
             width: 100%;
             background-position: unset;
+            background-color: #f5ead9;
         }
         .contactform{
             padding: 75px 50px;
             background: #fb911f;
-            box-shadow: 5px 15px 50px rgba(0,0,0 0.8);
+            box-shadow: 5px 15px 50px rgba(0,0,0, 0.8);
             max-width: 500px;
-            margin-top: 50px;
+            margin: 50px auto;
             align-items: center;
             justify-content: center;
         }
@@ -386,7 +398,7 @@
         }
         .copyright{
             padding: 20px;
-            border-top: 2px solid rgba(0,0,0 0.8);
+            border-top: 2px solid rgba(0,0,0, 0.8);
             background: rgba(228,222,222);
             text-align: center;
         }
@@ -538,7 +550,7 @@
         <div class="menutoggle" onclick="toggleMenu();"></div>
         <ul class="nav-bar">
             <li><a href="#baniere" onclick="toggleMenu();">Accueil</a></li>
-            <li><a href="#apropos" onclick="toggleMenu();">A propos</a></li>
+            <li><a href="#apropo" onclick="toggleMenu();">A propos</a></li>
             <li><a href="#menu" onclick="toggleMenu();">Menu</a></li>
             <li><a href="#expert" onclick="toggleMenu();">Expert</a></li>
             <li><a href="#temoignage" onclick="toggleMenu();">Temoignage</a></li>
@@ -557,7 +569,7 @@
             <a href="#" class="btn2">Restauration</a>
         </div>
     </section>
-    <section class="apropos" id="apropos">
+    <section class="apropo" id="apropo">
         <div class="row">
             <div class="col50">
                 <h2 class="titre-texte"><span>A</span> propos de nous</h2>
@@ -625,6 +637,7 @@
                 </div>
             </div>
         </div>
+        <br>
         <div class="titre">
         <a href="menu.html">
         <button class="but" type="button">Voir plus</button>

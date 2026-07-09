@@ -16,7 +16,7 @@
             justify-content: center;
             align-items: center;
             min-height:100vh;
-            background-color: #524f4f;
+            background-color: #f5ead9;
         }
         .logo-retour span{
             color: #fb911f;
@@ -90,6 +90,33 @@
         }
     </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    if (!window.supabaseClient) {
+    window.supabaseClient = window.supabase.createClient(
+        'https://hmofudgrocrchbjjtcwl.supabase.co',
+        'sb_publishable_5UB54EpgSRgY7LJdJtpLwg_XXefbPxB'
+    );
+}
+const supabase = window.supabaseClient;
+
+    document.querySelector('form').addEventListener('submit', async function(e){
+        e.preventDefault();
+        const { error } = await supabase.from('reservations').insert({
+            nom: document.querySelector('[placeholder="Jean KOSSI"]').value,
+            telephone: document.querySelector('[placeholder="99 999 999"]').value,
+            date: document.querySelector('input[type="date"]').value,
+            heure: document.querySelector('input[type="time"]').value,
+            nb_personnes: document.querySelector('[placeholder="Nombre de personnes"]').value,
+            message: document.querySelector('textarea').value
+        });
+        if (error) {
+            alert("Erreur, réessayez.");
+        } else {
+            alert("Réservation envoyée !");
+        }
+    });
+</script>
 <body>
     <form>
         <div class="contactform">
