@@ -90,35 +90,9 @@
         }
     </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    if (!window.supabaseClient) {
-    window.supabaseClient = window.supabase.createClient(
-        'https://hmofudgrocrchbjjtcwl.supabase.co',
-        'sb_publishable_5UB54EpgSRgY7LJdJtpLwg_XXefbPxB'
-    );
-}
-const supabase = window.supabaseClient;
-
-    document.querySelector('form').addEventListener('submit', async function(e){
-        e.preventDefault();
-        const { error } = await supabase.from('reservations').insert({
-            nom: document.querySelector('[placeholder="Jean KOSSI"]').value,
-            telephone: document.querySelector('[placeholder="99 999 999"]').value,
-            date: document.querySelector('input[type="date"]').value,
-            heure: document.querySelector('input[type="time"]').value,
-            nb_personnes: document.querySelector('[placeholder="Nombre de personnes"]').value,
-            message: document.querySelector('textarea').value
-        });
-        if (error) {
-            alert("Erreur, réessayez.");
-        } else {
-            alert("Réservation envoyée !");
-        }
-    });
-</script>
 <body>
     <form>
+        
         <div class="contactform">
             <div class="contactf">
                 <label>Nom :</label>
@@ -155,9 +129,37 @@ const supabase = window.supabaseClient;
             <textarea placeholder="Entrez votre message" ></textarea>
             <br>
 
-            <a href="#" class="btn-reservation">Réserver</a>
+            <button type="submit" class="btn-reservation">Réserver</button>
         </div>
         </div>
     </form>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+    const supabase = window.supabase.createClient(
+        'https://hmofudgrocrchbjjtcwl.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhtb2Z1ZGdyb2NyY2hiamp0Y3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2MzIzNjAsImV4cCI6MjA5ODIwODM2MH0.bMZnP5QV6OhcwYoIt4jH8JTiwULTauLXPAUFRCB-5TA'
+    );
+
+    document.querySelector('form').addEventListener('submit', async function(e){
+        e.preventDefault();
+        const { error } = await supabase.from('reservations').insert({
+            nom: document.querySelector('[placeholder="Jean KOSSI"]').value,
+            telephone: document.querySelector('[placeholder="99 999 999"]').value,
+            date: document.querySelector('input[type="date"]').value,
+            heure: document.querySelector('input[type="time"]').value,
+            nb_personnes: document.querySelector('[placeholder="Nombre de personnes"]').value,
+            message: document.querySelector('textarea').value
+        });
+        if (error) {
+            alert("Erreur, réessayez.");
+            console.log(error);
+        } else {
+            alert("Réservation envoyée !");
+            document.querySelector('form').reset();
+        }
+    });
+})();
+</script>
 </body>
 </html>
