@@ -147,6 +147,34 @@
             .card-body { padding: 25px; }
             .card-header { padding: 25px; }
         }
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .reservation-card { max-width: 100%; }
+            .card-header { padding: 20px; }
+            .card-header .back-link { font-size: 1em; top: 14px; left: 16px; }
+            .card-header .logo-text { font-size: 1.5em; }
+            .card-header p { font-size: 0.82em; }
+            .card-body { padding: 22px; }
+            .card-body h3 { font-size: 1.2em; margin-bottom: 18px; }
+            .form-group { margin-bottom: 14px; }
+            .form-group label { font-size: 0.78em; }
+            .form-group input, .form-group textarea { padding: 10px 14px; font-size: 0.88em; }
+            .btn-submit { padding: 13px; font-size: 0.9em; }
+            #toast-container { top: 15px; right: 12px; }
+            .toast { padding: 12px 20px; font-size: 0.85em; max-width: 300px; }
+        }
+        @media (max-width: 380px) {
+            body { padding: 8px; }
+            .card-header { padding: 16px; }
+            .card-header .logo-text { font-size: 1.2em; }
+            .card-header .back-link { font-size: 0.85em; top: 10px; left: 12px; }
+            .card-header p { font-size: 0.75em; }
+            .card-body { padding: 16px; }
+            .card-body h3 { font-size: 1em; }
+            .form-group input, .form-group textarea { padding: 8px 12px; font-size: 0.82em; }
+            .btn-submit { padding: 11px; font-size: 0.82em; }
+            .form-row { gap: 10px; }
+        }
         #toast-container {
             position: fixed;
             top: 30px;

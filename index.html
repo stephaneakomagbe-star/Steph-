@@ -793,6 +793,98 @@ border: none;
         footer .footer-links { margin: 15px 0; display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
         footer .footer-links a { color: rgba(255,255,255,0.7); font-size: 0.9em; transition: var(--transition); }
         footer .footer-links a:hover { color: var(--primary); }
+
+        /* ========== MOBILE RESPONSIVE : ≤480px ========== */
+        @media (max-width: 480px) {
+            header { padding: 14px 4%; }
+            .logo { font-size: 1.4em; }
+            section { padding: 50px 4%; }
+            .section-title { font-size: 1.5em; }
+            .section-subtitle { font-size: 0.85em; margin-bottom: 30px; }
+            .hero { min-height: 85vh; padding: 0 4%; }
+            .hero h1 { font-size: 1.7em; }
+            .hero p { font-size: 0.9em; margin-bottom: 25px; }
+            .hero-buttons { gap: 12px; flex-direction: column; align-items: center; }
+            .hero-buttons .btn { width: 100%; max-width: 260px; justify-content: center; }
+            .btn { padding: 11px 24px; font-size: 0.85em; }
+            .about-text h2 { font-size: 1.4em; }
+            .about-text p { font-size: 0.9em; }
+            .about-grid { gap: 25px; }
+            .menu-grid { gap: 18px; }
+            .menu-card-img { height: 180px; }
+            .menu-card-body { padding: 18px; }
+            .menu-card-body h3 { font-size: 1.1em; }
+            .menu-card-body p { font-size: 0.82em; }
+            .menu-price { font-size: 0.75em; padding: 4px 12px; }
+            .menu-badge { font-size: 0.7em; padding: 4px 12px; }
+            .experts-grid { gap: 18px; }
+            .expert-card { padding: 20px; }
+            .expert-card img { width: 90px; height: 90px; }
+            .testimonials-grid { gap: 18px; }
+            .testimonial-card { padding: 22px; }
+            .testimonial-card p { font-size: 0.85em; }
+            .gallery-grid { gap: 12px; }
+            .gallery-item { height: 180px; }
+            .contact-container { gap: 25px; }
+            .contact-info h3 { font-size: 1.3em; }
+            .contact-form { padding: 25px; }
+            .contact-form h3 { font-size: 1.2em; }
+            .infos-wrapper { grid-template-columns: 1fr; gap: 25px; margin-top: 30px; }
+            .horaires-box { padding: 22px; }
+            .horaires-box h3 { font-size: 1.1em; }
+            .horaire-row { font-size: 0.85em; flex-wrap: wrap; gap: 5px; }
+            .maps-box iframe { min-height: 220px; }
+            #back-to-top { width: 40px; height: 40px; font-size: 1em; bottom: 20px; right: 20px; }
+            footer { padding: 25px 4%; }
+            footer .logo-footer { font-size: 1.2em; }
+            footer p { font-size: 0.8em; }
+            footer .footer-links { gap: 15px; }
+            footer .footer-links a { font-size: 0.8em; }
+            .nav-links { width: 85%; max-width: 300px; }
+            .nav-links a { font-size: 1em; }
+            .form-group input, .form-group textarea { padding: 11px 14px; font-size: 0.88em; }
+            .contact-detail i { width: 38px; height: 38px; font-size: 0.95em; }
+            .contact-socials a { width: 42px; height: 42px; font-size: 1.1em; }
+        }
+
+        /* ========== TRÈS PETITS ÉCRANS : ≤380px ========== */
+        @media (max-width: 380px) {
+            header { padding: 10px 3%; }
+            .logo { font-size: 1.1em; }
+            .hero { min-height: 75vh; }
+            .hero h1 { font-size: 1.35em; }
+            .hero p { font-size: 0.8em; margin-bottom: 20px; }
+            .section-title { font-size: 1.3em; }
+            .section-subtitle { font-size: 0.78em; margin-bottom: 22px; }
+            .btn { padding: 9px 16px; font-size: 0.75em; }
+            .hero-buttons .btn { max-width: 220px; }
+            section { padding: 35px 3%; }
+            .about-text h2 { font-size: 1.15em; }
+            .about-text p { font-size: 0.82em; }
+            .menu-grid { gap: 14px; }
+            .menu-card-img { height: 150px; }
+            .menu-card-body { padding: 14px; }
+            .menu-card-body h3 { font-size: 1em; }
+            .price { font-size: 1.1em; }
+            .experts-grid { grid-template-columns: 1fr; gap: 14px; }
+            .testimonials-grid { grid-template-columns: 1fr; gap: 14px; }
+            .testimonial-card { padding: 18px; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .gallery-item { height: 130px; }
+            .contact-form { padding: 18px; }
+            .form-group input, .form-group textarea { padding: 10px 12px; font-size: 0.82em; }
+            .contact-detail i { width: 34px; height: 34px; font-size: 0.85em; }
+            .contact-socials a { width: 38px; height: 38px; font-size: 1em; }
+            .horaires-box { padding: 16px; }
+            .horaire-row { font-size: 0.78em; }
+            .maps-box iframe { min-height: 180px; }
+            #back-to-top { width: 36px; height: 36px; font-size: 0.85em; bottom: 15px; right: 15px; }
+            footer { padding: 20px 3%; }
+            footer .logo-footer { font-size: 1em; }
+            footer .footer-links { gap: 10px; }
+            .nav-links { width: 90%; max-width: 280px; gap: 25px; }
+            .nav-links a { font-size: 0.9em; }
+        }
     </style>
 </head>
 <body>

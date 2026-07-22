@@ -162,9 +162,35 @@
             border-top: 1px solid #ddd;
         }
         @media (max-width: 768px) {
+            header { padding: 30px 15px 40px; }
             header .logo-menu { font-size: 1.8em; }
             .menu-container { grid-template-columns: 1fr; }
             .btn-actions a { display: block; margin: 10px 0; }
+        }
+        @media (max-width: 480px) {
+            header { padding: 25px 12px 35px; }
+            header .back-home { font-size: 0.85em; top: 12px; left: 12px; }
+            header .logo-menu { font-size: 1.4em; }
+            header p { font-size: 0.9em; }
+            .menu-container { padding: 0 12px; gap: 18px; }
+            .menu-card .card-img { height: 170px; }
+            .menu-card .card-body { padding: 18px; }
+            .menu-card .card-body h3 { font-size: 1.1em; }
+            .menu-card .card-body .desc { font-size: 0.82em; }
+            .menu-card .card-body .price { font-size: 1.2em; }
+            .menu-card .card-body .order-btn { padding: 6px 16px; font-size: 0.78em; }
+            .btn-actions { padding: 15px 0 35px; }
+            .btn-actions a { padding: 11px 24px; font-size: 0.85em; }
+            footer { padding: 20px; font-size: 0.85em; }
+        }
+        @media (max-width: 380px) {
+            header .logo-menu { font-size: 1.15em; }
+            header p { font-size: 0.8em; }
+            .menu-card .card-img { height: 140px; }
+            .menu-card .card-body { padding: 14px; }
+            .menu-card .card-body h3 { font-size: 1em; }
+            .menu-card .card-body .price { font-size: 1.05em; }
+            .btn-actions a { padding: 9px 18px; font-size: 0.78em; margin: 6px 0; }
         }
     </style>
 </head>
