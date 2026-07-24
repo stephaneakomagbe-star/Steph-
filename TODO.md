@@ -11,7 +11,6 @@
 - [x] Media queries pour très petits écrans
 
 ## Changements effectués
-
 ### `index.html`
 - **≤480px** : Hero réduit (85vh, titre 1.7em), padding sections 50px, boutons en colonne, grilles resserées, infos-wrapper en colonne, polices réduites partout
 - **≤380px** : Hero 75vh, titre 1.35em, experts/témoignages en 1 colonne, galerie en 2 colonnes, boutons encore plus petits
