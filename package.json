@@ -1,0 +1,22 @@
+{
+  "name": "stephfood-resto",
+  "version": "1.0.0",
+  "description": "StephFood - Restaurant Togolais à Lomé",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'Static HTML site - no build needed'",
+    "lint": "echo 'No linter configured for static HTML'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "restaurant",
+    "togolais",
+    "lome",
+    "stephfood"
+  ],
+  "author": "Stephane AKOMAGBE",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.12"
+  }
+}
