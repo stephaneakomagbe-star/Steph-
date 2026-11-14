@@ -1,7 +1,10 @@
-import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
-import { Bell, BookOpen, Flame, ShieldCheck, Sparkles } from 'lucide-react-native';
+import { useMemo } from 'react';
+import { Pressable, ScrollView, Switch, Text, View } from 'react-native';
+import { Bell, BookOpen, Flame, ShieldCheck, Sparkles } from './icons';
+import { ThemeSwitch } from './ThemeSwitch';
+import { useTheme } from '../context/ThemeContext';
 import { CourseId, GoalMinutes, getCourseLabel, getLevelLabel, Level, Profile } from '../data/coursesData';
-import { colors, spacing } from '../theme';
+import { Palette, sheet, spacing } from '../theme';
 
 type Props = {
   profile: Profile;
@@ -18,10 +21,12 @@ const LEVELS: Level[] = ['debutant', 'intermediaire', 'avance'];
 const GOALS: GoalMinutes[] = [5, 10, 15];
 
 export function ProfileScreen({ profile, reminderEnabled, xp, streak, onUpdate, onSetReminder, onSetReminderTime }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.profileHero}>
-        <View style={styles.avatar}><BookOpen size={25} color={colors.white} /></View>
+        <View style={styles.avatar}><BookOpen size={25} color={colors.onPrimary} /></View>
         <Text style={styles.title}>Mon espace</Text>
         <Text style={styles.subtitle}>Un parcours qui vous ressemble.</Text>
         <View style={styles.stats}>
@@ -30,6 +35,12 @@ export function ProfileScreen({ profile, reminderEnabled, xp, streak, onUpdate, 
             <View style={styles.stat}><Flame size={16} color={colors.orange} /><Text style={styles.statNumber}>{streak}</Text><Text style={styles.statLabel}>jours de suite</Text></View>
           )}
         </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Apparence</Text>
+        <Text style={styles.label}>Mode d’affichage</Text>
+        <ThemeSwitch />
       </View>
 
       <View style={styles.section}>
@@ -64,7 +75,7 @@ export function ProfileScreen({ profile, reminderEnabled, xp, streak, onUpdate, 
             value={reminderEnabled}
             onValueChange={onSetReminder}
             trackColor={{ false: colors.line, true: colors.primary }}
-            thumbColor={colors.white}
+            thumbColor={colors.onPrimary}
             accessibilityLabel="Activer le rappel quotidien"
           />
         </View>
@@ -78,7 +89,7 @@ export function ProfileScreen({ profile, reminderEnabled, xp, streak, onUpdate, 
             value={profile.hideStreak}
             onValueChange={(hideStreak) => onUpdate({ hideStreak })}
             trackColor={{ false: colors.line, true: colors.primary }}
-            thumbColor={colors.white}
+            thumbColor={colors.onPrimary}
             accessibilityLabel="Masquer la série quotidienne"
           />
         </View>
@@ -105,6 +116,8 @@ export function ProfileScreen({ profile, reminderEnabled, xp, streak, onUpdate, 
 }
 
 function Option({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <Pressable accessibilityRole="button" accessibilityState={{ selected: active }} onPress={onPress} style={[styles.option, active && styles.optionActive]}>
       <Text style={[styles.optionText, active && styles.optionTextActive]}>{label}</Text>
@@ -112,41 +125,43 @@ function Option({ label, active, onPress }: { label: string; active: boolean; on
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(colors: Palette): any {
+  return sheet({
   scroll: { padding: spacing.md, paddingBottom: 28 },
-  profileHero: { alignItems: 'center', padding: 20, backgroundColor: colors.ink, borderRadius: 22 },
+  profileHero: { alignItems: 'center', padding: 20, backgroundColor: colors.hero, borderRadius: 22 },
   avatar: { width: 55, height: 55, borderRadius: 19, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
-  title: { color: colors.white, fontSize: 22, fontWeight: '900', marginTop: 10 },
-  subtitle: { color: '#D3D5E2', fontSize: 12, marginTop: 4 },
+  title: { color: colors.heroText, fontSize: 24, fontWeight: '800', marginTop: 10 },
+  subtitle: { color: colors.heroMuted, fontSize: 14, marginTop: 4 },
   stats: { flexDirection: 'row', gap: 10, width: '100%', marginTop: 17 },
-  stat: { flex: 1, minHeight: 43, backgroundColor: '#FFFFFF1A', borderRadius: 13, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
-  statNumber: { color: colors.white, fontWeight: '900', fontSize: 14 },
-  statLabel: { color: '#D3D5E2', fontSize: 10 },
+  stat: { flex: 1, minHeight: 43, backgroundColor: colors.heroSoft, borderRadius: 13, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
+  statNumber: { color: colors.heroText, fontWeight: '800', fontSize: 15 },
+  statLabel: { color: colors.heroMuted, fontSize: 14 },
   section: { backgroundColor: colors.white, borderRadius: 19, padding: 16, marginTop: 14, borderWidth: 1, borderColor: colors.line },
-  sectionTitle: { color: colors.ink, fontSize: 15, fontWeight: '900', marginBottom: 13 },
-  label: { color: colors.muted, fontSize: 10, fontWeight: '800', marginBottom: 7 },
+  sectionTitle: { color: colors.ink, fontSize: 17, fontWeight: '800', marginBottom: 13 },
+  label: { color: colors.muted, fontSize: 13, fontWeight: '700', marginBottom: 7 },
   choiceRow: { flexDirection: 'row', gap: 7, marginBottom: 13 },
   option: { flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 37, paddingHorizontal: 5, borderRadius: 11, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.line },
   optionActive: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
-  optionText: { color: colors.muted, fontSize: 10, fontWeight: '800' },
+  optionText: { color: colors.muted, fontSize: 14, fontWeight: '800' },
   optionTextActive: { color: colors.primary },
   goalRow: { flexDirection: 'row', gap: 8 },
   goal: { flex: 1, alignItems: 'center', paddingVertical: 11, borderRadius: 11, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.line },
   goalActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  goalText: { color: colors.muted, fontSize: 12, fontWeight: '900' },
-  goalTextActive: { color: colors.white },
+  goalText: { color: colors.muted, fontSize: 14, fontWeight: '900' },
+  goalTextActive: { color: colors.onPrimary },
   reminder: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 17 },
   reminderIcon: { width: 37, height: 37, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primarySoft },
   reminderCopy: { flex: 1 },
-  reminderTitle: { color: colors.ink, fontSize: 12, fontWeight: '800' },
-  reminderText: { color: colors.muted, fontSize: 10, lineHeight: 15, marginTop: 2 },
+  reminderTitle: { color: colors.ink, fontSize: 14, fontWeight: '800' },
+  reminderText: { color: colors.muted, fontSize: 13, lineHeight: 18, marginTop: 2 },
   reminderTimes: { flexDirection: 'row', gap: 7, marginTop: 12 },
   reminderTime: { flex: 1, alignItems: 'center', paddingVertical: 9, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.line, borderRadius: 10 },
   reminderTimeActive: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
-  reminderTimeText: { color: colors.muted, fontSize: 11, fontWeight: '800' },
+  reminderTimeText: { color: colors.muted, fontSize: 13, fontWeight: '800' },
   reminderTimeTextActive: { color: colors.primary },
   respect: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, padding: 14, borderRadius: 16, backgroundColor: colors.greenSoft, marginTop: 14 },
   respectCopy: { flex: 1 },
-  respectTitle: { color: colors.green, fontSize: 12, fontWeight: '900' },
-  respectText: { color: colors.ink, fontSize: 10, lineHeight: 15, marginTop: 4 },
+  respectTitle: { color: colors.green, fontSize: 14, fontWeight: '800' },
+  respectText: { color: colors.ink, fontSize: 13, lineHeight: 18, marginTop: 4 },
 });
+}

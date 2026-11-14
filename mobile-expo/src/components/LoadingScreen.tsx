@@ -1,7 +1,11 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../theme';
+import { useMemo } from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
+import { Palette, sheet } from '../theme';
 
 export function LoadingScreen({ error, onRetry }: { error: string; onRetry: () => void }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.container}>
       {error ? (
@@ -20,10 +24,12 @@ export function LoadingScreen({ error, onRetry }: { error: string; onRetry: () =
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(colors: Palette): any {
+  return sheet({
   container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 28, backgroundColor: colors.background },
   title: { color: colors.ink, fontSize: 22, fontWeight: '900', textAlign: 'center' },
   message: { color: colors.muted, fontSize: 14, lineHeight: 21, textAlign: 'center', marginTop: 11 },
-  retry: { color: colors.primary, fontSize: 15, fontWeight: '900', marginTop: 20 },
+  retry: { color: colors.primary, fontSize: 15, fontWeight: '800', marginTop: 20 },
 });
+}
 

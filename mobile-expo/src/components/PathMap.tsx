@@ -1,7 +1,9 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ArrowRight, BookOpen, Check, Clock3, Flame, Heart, Lock, Sparkles } from 'lucide-react-native';
+import { useMemo } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ArrowRight, BookOpen, Check, Clock3, Flame, Heart, Lock, Sparkles } from './icons';
+import { useTheme } from '../context/ThemeContext';
 import { CourseId, getCourseLabel, getCourseLessons, getLevelLabel, GoalMinutes, Lesson, Level } from '../data/coursesData';
-import { colors, spacing } from '../theme';
+import { Palette, sheet, spacing } from '../theme';
 
 type Props = {
   course: CourseId;
@@ -17,6 +19,8 @@ type Props = {
 const COURSE_CHOICES: CourseId[] = ['bible', 'coran', 'decouverte'];
 
 export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, onCourseChange, onStart, onRead }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const lessons = getCourseLessons(course);
   const completed = lessons.filter((lesson) => completedLessonIds.includes(lesson.id)).length;
   const nextLesson = lessons.find((lesson) => !completedLessonIds.includes(lesson.id));
@@ -26,7 +30,7 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <View style={styles.hero}>
         <View style={styles.heroTop}>
-          <View style={styles.heroPill}><Sparkles size={13} color={colors.gold} /><Text style={styles.heroPillText}>VOTRE ESPACE D’APPRENTISSAGE</Text></View>
+          <View style={styles.heroPill}><Sparkles size={14} color={colors.gold} /><Text style={styles.heroPillText}>Votre espace</Text></View>
           <View style={styles.streak}><Flame size={15} color={colors.orange} /><Text style={styles.streakText}>{dailyGoal} min / jour</Text></View>
         </View>
         <Text style={styles.heroTitle}>Un moment pour{'\n'}nourrir sa curiosité.</Text>
@@ -39,12 +43,12 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
           hearts > 0 ? (
             <Pressable accessibilityRole="button" onPress={() => onStart(nextLesson, false)} style={styles.heroCta}>
               <Text style={styles.heroCtaText}>Continuer · {nextLesson.title}</Text>
-              <ArrowRight size={16} color={colors.ink} />
+              <ArrowRight size={16} color={colors.hero} />
             </Pressable>
           ) : (
             <Pressable accessibilityRole="button" onPress={() => onRead(nextLesson)} style={styles.heroCta}>
               <Text style={styles.heroCtaText}>Lire sans exercice · {nextLesson.title}</Text>
-              <ArrowRight size={16} color={colors.ink} />
+              <ArrowRight size={16} color={colors.hero} />
             </Pressable>
           )
         ) : (
@@ -55,7 +59,7 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
       <Text style={styles.sectionTitle}>Choisir un parcours</Text>
       <View style={styles.courseRow}>
         {COURSE_CHOICES.map((option) => (
-          <Pressable key={option} onPress={() => onCourseChange(option)} style={[styles.courseChip, course === option && styles.activeCourseChip]}>
+          <Pressable key={option} accessibilityRole="button" accessibilityState={{ selected: course === option }} onPress={() => onCourseChange(option)} style={[styles.courseChip, course === option && styles.activeCourseChip]}>
             <Text style={[styles.courseChipText, course === option && styles.activeCourseChipText]}>{getCourseLabel(option)}</Text>
           </Pressable>
         ))}
@@ -88,7 +92,7 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
                 style={[styles.lessonCard, isCurrent && styles.currentCard, !isUnlocked && styles.lockedCard]}
               >
                 <View style={[styles.node, isCompleted && styles.nodeDone, isCurrent && styles.nodeCurrent, !isUnlocked && styles.nodeLocked]}>
-                  {isCompleted ? <Check size={19} color={colors.white} /> : !isUnlocked ? <Lock size={16} color={colors.locked} /> : <Text style={[styles.nodeNumber, isCurrent && styles.nodeNumberCurrent]}>{index + 1}</Text>}
+                  {isCompleted ? <Check size={19} color={colors.onPrimary} /> : !isUnlocked ? <Lock size={16} color={colors.locked} /> : <Text style={[styles.nodeNumber, isCurrent && styles.nodeNumberCurrent]}>{index + 1}</Text>}
                 </View>
                 <View style={styles.lessonCopy}>
                   <View style={styles.lessonMeta}>
@@ -120,59 +124,61 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(colors: Palette): any {
+  return sheet({
   scroll: { paddingHorizontal: spacing.md, paddingTop: spacing.md, paddingBottom: 28 },
-  hero: { backgroundColor: colors.ink, borderRadius: 24, padding: 21, overflow: 'hidden' },
+  hero: { backgroundColor: colors.hero, borderRadius: 24, padding: 21, overflow: 'hidden' },
   heroTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  heroPill: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#FFFFFF1A', paddingHorizontal: 9, paddingVertical: 7, borderRadius: 13 },
-  heroPillText: { color: '#F7E5C5', fontSize: 9, fontWeight: '900', letterSpacing: 0.5 },
+  heroPill: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.heroSoft, paddingHorizontal: 9, paddingVertical: 7, borderRadius: 13 },
+  heroPillText: { color: colors.gold, fontSize: 13, fontWeight: '800', letterSpacing: 0.4 },
   streak: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  streakText: { color: '#F4D59D', fontWeight: '800', fontSize: 11 },
-  heroTitle: { color: colors.white, fontSize: 25, lineHeight: 30, fontWeight: '900', letterSpacing: -0.5, marginTop: 19 },
-  heroBody: { color: '#D3D5E2', fontSize: 12, lineHeight: 18, marginTop: 8, maxWidth: 285 },
+  streakText: { color: colors.gold, fontWeight: '800', fontSize: 14 },
+  heroTitle: { color: colors.heroText, fontSize: 26, lineHeight: 32, fontWeight: '800', letterSpacing: -0.4, marginTop: 19 },
+  heroBody: { color: colors.heroMuted, fontSize: 14, lineHeight: 20, marginTop: 8, maxWidth: 285 },
   progressLine: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 18 },
-  progressTrack: { height: 6, flex: 1, borderRadius: 6, backgroundColor: '#FFFFFF2B', overflow: 'hidden' },
-  progressFill: { height: '100%', backgroundColor: '#F0BC63', borderRadius: 6 },
-  progressLabel: { color: colors.white, fontSize: 10, fontWeight: '800' },
-  heroCta: { marginTop: 16, minHeight: 46, borderRadius: 14, backgroundColor: '#F0BC63', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 14 },
-  heroCtaText: { color: colors.ink, fontSize: 13, fontWeight: '900', flexShrink: 1 },
+  progressTrack: { height: 6, flex: 1, borderRadius: 6, backgroundColor: colors.heroSoft, overflow: 'hidden' },
+  progressFill: { height: '100%', backgroundColor: colors.gold, borderRadius: 6 },
+  progressLabel: { color: colors.heroText, fontSize: 14, fontWeight: '800' },
+  heroCta: { marginTop: 16, minHeight: 48, borderRadius: 14, backgroundColor: colors.gold, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 14 },
+  heroCtaText: { color: colors.hero, fontSize: 15, fontWeight: '800', flexShrink: 1 },
   heroDone: { marginTop: 16, paddingVertical: 10 },
-  heroDoneText: { color: '#F7E5C5', fontSize: 12, fontWeight: '700' },
+  heroDoneText: { color: colors.gold, fontSize: 14, fontWeight: '700' },
   sectionTitle: { color: colors.ink, fontSize: 17, fontWeight: '900', marginTop: 22, marginBottom: 11 },
   courseRow: { flexDirection: 'row', gap: 8 },
   courseChip: { flex: 1, alignItems: 'center', paddingVertical: 11, borderRadius: 13, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.line },
   activeCourseChip: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
-  courseChipText: { color: colors.muted, fontSize: 11, fontWeight: '800' },
+  courseChipText: { color: colors.muted, fontSize: 13, fontWeight: '800' },
   activeCourseChipText: { color: colors.primary },
   moduleHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 24 },
-  moduleEyebrow: { color: colors.primary, fontSize: 9, fontWeight: '900', letterSpacing: 0.8 },
+  moduleEyebrow: { color: colors.primary, fontSize: 14, fontWeight: '800', letterSpacing: 0.6 },
   moduleTitle: { color: colors.ink, fontSize: 21, fontWeight: '900', marginTop: 4 },
   moduleIcon: { width: 42, height: 42, borderRadius: 15, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
-  moduleDescription: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 7 },
+  moduleDescription: { color: colors.muted, fontSize: 14, lineHeight: 20, marginTop: 7 },
   lessonPath: { marginTop: 13, gap: 10 },
   lessonRow: { width: '100%' },
   rowLeft: { alignItems: 'flex-start' },
   rowRight: { alignItems: 'flex-end' },
   lessonCard: { width: '93%', minHeight: 83, flexDirection: 'row', alignItems: 'center', gap: 11, padding: 12, borderRadius: 18, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.line },
-  currentCard: { borderColor: colors.primary, backgroundColor: '#FBFAFF' },
+  currentCard: { borderColor: colors.primary, backgroundColor: colors.primarySoft },
   lockedCard: { opacity: 0.66 },
   node: { width: 37, height: 37, borderRadius: 14, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   nodeDone: { backgroundColor: colors.green },
   nodeCurrent: { backgroundColor: colors.primary },
   nodeLocked: { backgroundColor: colors.background },
   nodeNumber: { color: colors.primary, fontSize: 15, fontWeight: '900' },
-  nodeNumberCurrent: { color: colors.white },
+  nodeNumberCurrent: { color: colors.onPrimary },
   lessonCopy: { flex: 1 },
   lessonMeta: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
-  lessonEyebrow: { color: colors.muted, fontSize: 8, fontWeight: '900', letterSpacing: 0.6 },
+  lessonEyebrow: { color: colors.muted, fontSize: 13, fontWeight: '800', letterSpacing: 0.4 },
   currentEyebrow: { color: colors.primary },
   duration: { flexDirection: 'row', alignItems: 'center', gap: 3 },
-  durationText: { color: colors.muted, fontSize: 9, fontWeight: '700' },
-  lessonTitle: { color: colors.ink, fontSize: 13, fontWeight: '900' },
-  lessonSubtitle: { color: colors.muted, fontSize: 10, marginTop: 3 },
+  durationText: { color: colors.muted, fontSize: 14, fontWeight: '700' },
+  lessonTitle: { color: colors.ink, fontSize: 15, fontWeight: '800' },
+  lessonSubtitle: { color: colors.muted, fontSize: 13, marginTop: 3 },
   lockedText: { color: colors.muted },
   heartNotice: { flexDirection: 'row', gap: 10, alignItems: 'flex-start', marginTop: 16, padding: 13, backgroundColor: colors.redSoft, borderRadius: 15 },
-  heartText: { flex: 1, color: colors.ink, fontSize: 11, lineHeight: 17 },
+  heartText: { flex: 1, color: colors.ink, fontSize: 13, lineHeight: 19 },
   sourceNote: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginTop: 18, paddingHorizontal: 2 },
-  sourceText: { flex: 1, color: colors.muted, fontSize: 10, lineHeight: 15 },
+  sourceText: { flex: 1, color: colors.muted, fontSize: 13, lineHeight: 18 },
 });
+}

@@ -1,7 +1,9 @@
-import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
-import { ArrowRight, BookOpen, Check, Clock3, RotateCcw } from 'lucide-react-native';
+import { useMemo } from 'react';
+import { ScrollView, Text, View, Pressable } from 'react-native';
+import { ArrowRight, BookOpen, Check, Clock3, RotateCcw } from './icons';
+import { useTheme } from '../context/ThemeContext';
 import { Lesson } from '../data/coursesData';
-import { colors, spacing } from '../theme';
+import { Palette, sheet, spacing } from '../theme';
 
 type Props = {
   lessons: Lesson[];
@@ -11,6 +13,8 @@ type Props = {
 };
 
 export function ReviewScreen({ lessons, completedLessonIds, onRead, onReview }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const completedLessons = lessons.filter((lesson) => completedLessonIds.includes(lesson.id));
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
@@ -32,7 +36,7 @@ export function ReviewScreen({ lessons, completedLessonIds, onRead, onReview }: 
               </Pressable>
               <Pressable accessibilityRole="button" onPress={() => onReview(lesson)} style={[styles.action, styles.actionPrimary]}>
                 <Text style={styles.actionPrimaryText}>Exercices</Text>
-                <ArrowRight size={13} color={colors.white} />
+                <ArrowRight size={13} color={colors.onPrimary} />
               </Pressable>
             </View>
           </View>
@@ -52,29 +56,31 @@ export function ReviewScreen({ lessons, completedLessonIds, onRead, onReview }: 
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(colors: Palette): any {
+  return sheet({
   scroll: { padding: spacing.md, paddingBottom: 28 },
   hero: { padding: 20, borderRadius: 22, backgroundColor: colors.primarySoft },
   icon: { width: 43, height: 43, borderRadius: 15, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
-  title: { color: colors.ink, fontSize: 23, lineHeight: 29, fontWeight: '900', marginTop: 16 },
-  subtitle: { color: colors.muted, fontSize: 12, lineHeight: 19, marginTop: 7 },
+  title: { color: colors.ink, fontSize: 26, lineHeight: 32, fontWeight: '800', marginTop: 16 },
+  subtitle: { color: colors.muted, fontSize: 15, lineHeight: 22, marginTop: 7 },
   sectionTitle: { color: colors.ink, fontSize: 17, fontWeight: '900', marginTop: 22, marginBottom: 11 },
   count: { color: colors.primary, fontSize: 13 },
   lesson: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, padding: 13, borderRadius: 16, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.line, marginBottom: 9 },
   lessonIcon: { width: 40, height: 40, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.greenSoft, marginTop: 2 },
   lessonCopy: { flex: 1, gap: 5 },
-  lessonTitle: { color: colors.ink, fontSize: 13, fontWeight: '800' },
-  lessonMeta: { color: colors.muted, fontSize: 10 },
+  lessonTitle: { color: colors.ink, fontSize: 15, fontWeight: '800' },
+  lessonMeta: { color: colors.muted, fontSize: 13 },
   actions: { flexDirection: 'row', gap: 8, marginTop: 8 },
   action: { minHeight: 32, paddingHorizontal: 11, borderRadius: 10, borderWidth: 1, borderColor: colors.line, alignItems: 'center', justifyContent: 'center' },
-  actionText: { color: colors.ink, fontSize: 11, fontWeight: '800' },
+  actionText: { color: colors.ink, fontSize: 13, fontWeight: '800' },
   actionPrimary: { flexDirection: 'row', gap: 5, backgroundColor: colors.primary, borderColor: colors.primary },
-  actionPrimaryText: { color: colors.white, fontSize: 11, fontWeight: '800' },
+  actionPrimaryText: { color: colors.onPrimary, fontSize: 13, fontWeight: '800' },
   empty: { alignItems: 'center', paddingHorizontal: 24, paddingVertical: 28, borderRadius: 19, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.line },
   emptyIcon: { width: 52, height: 52, borderRadius: 18, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   emptyTitle: { color: colors.ink, fontSize: 15, fontWeight: '900', textAlign: 'center', marginTop: 14 },
-  emptyText: { color: colors.muted, fontSize: 12, lineHeight: 18, textAlign: 'center', marginTop: 7 },
+  emptyText: { color: colors.muted, fontSize: 14, lineHeight: 20, textAlign: 'center', marginTop: 7 },
   note: { flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: 14, padding: 13, borderRadius: 14, backgroundColor: colors.greenSoft },
-  noteText: { flex: 1, color: colors.green, fontSize: 11, lineHeight: 16, fontWeight: '700' },
+  noteText: { flex: 1, color: colors.green, fontSize: 13, lineHeight: 18, fontWeight: '700' },
 });
+}
 

@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useReducer, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ArrowLeft, ArrowRight, Check, CheckCircle2, Heart, RotateCcw, X } from 'lucide-react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, Heart, RotateCcw, X } from './icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CompletionScreen } from './CompletionScreen';
+import { useTheme } from '../context/ThemeContext';
 import { ChoiceQuestion, Lesson, MatchingQuestion, Question, TrueFalseQuestion, WordBankQuestion } from '../data/coursesData';
-import { colors, spacing } from '../theme';
+import { Palette, sheet, spacing } from '../theme';
 
 type Phase = 'answering' | 'feedback' | 'complete' | 'out-of-hearts';
 
@@ -130,6 +131,8 @@ type Props = {
 };
 
 export function LessonScreen({ lesson, review, hearts, onLoseHeart, onComplete, onExit, onDone }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const [state, dispatch] = useReducer(machine, hearts, createMachine);
   const completionNotified = useRef(false);
   const question = lesson.questions[state.questionIndex];
@@ -244,7 +247,7 @@ export function LessonScreen({ lesson, review, hearts, onLoseHeart, onComplete, 
         {state.phase === 'feedback' ? (
           <Pressable onPress={() => dispatch({ type: 'next', total: lesson.questions.length, review })} style={styles.primaryButton}>
             <Text style={styles.primaryText}>{state.livesRemaining === 0 && !review ? 'Terminer' : state.questionIndex === lesson.questions.length - 1 ? 'Voir le résultat' : 'Continuer'}</Text>
-            <ArrowRight size={18} color={colors.white} />
+            <ArrowRight size={18} color={colors.onPrimary} />
           </Pressable>
         ) : (
           <Pressable
@@ -257,7 +260,7 @@ export function LessonScreen({ lesson, review, hearts, onLoseHeart, onComplete, 
             style={[styles.primaryButton, !complete && styles.disabledButton]}
           >
             <Text style={styles.primaryText}>Vérifier</Text>
-            <Check size={18} color={colors.white} />
+            <Check size={18} color={colors.onPrimary} />
           </Pressable>
         )}
       </View>
@@ -266,6 +269,8 @@ export function LessonScreen({ lesson, review, hearts, onLoseHeart, onComplete, 
 }
 
 function TrueFalseExercise({ question, selected, disabled, onSelect }: { question: TrueFalseQuestion; selected: number | null; disabled: boolean; onSelect: (index: number) => void }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.options}>
       {['Vrai', 'Faux'].map((option, index) => (
@@ -286,6 +291,8 @@ function TrueFalseExercise({ question, selected, disabled, onSelect }: { questio
 }
 
 function ChoiceExercise({ question, selected, disabled, onSelect }: { question: ChoiceQuestion; selected: number | null; disabled: boolean; onSelect: (index: number) => void }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.options}>
       {question.options.map((option, index) => (
@@ -306,6 +313,8 @@ function ChoiceExercise({ question, selected, disabled, onSelect }: { question: 
 }
 
 function WordBankExercise({ question, selectedIds, onToggle }: { question: WordBankQuestion; selectedIds: string[]; onToggle: (id: string) => void }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const selectedWords = selectedIds.map((id) => question.bank.find((word) => word.id === id)).filter((word) => Boolean(word));
   return (
     <View style={styles.wordExercise}>
@@ -332,6 +341,8 @@ function WordBankExercise({ question, selectedIds, onToggle }: { question: WordB
 }
 
 function MatchingExercise({ question, matches, selectedLeft, onSelectLeft, onSelectRight }: { question: MatchingQuestion; matches: Record<string, string>; selectedLeft: string | null; onSelectLeft: (id: string) => void; onSelectRight: (id: string) => void }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const rightOptions = [...question.pairs].reverse();
   return (
     <View style={styles.matching}>
@@ -377,7 +388,8 @@ function getCorrectAnswer(question: Question): string {
 
 export { CompletionScreen };
 
-const styles = StyleSheet.create({
+function createStyles(colors: Palette): any {
+  return sheet({
   screen: { flex: 1, backgroundColor: colors.background },
   top: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: spacing.md, paddingTop: 10, paddingBottom: 15 },
   closeButton: { width: 35, height: 35, borderRadius: 13, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
@@ -386,51 +398,52 @@ const styles = StyleSheet.create({
   hearts: { flexDirection: 'row', gap: 2 },
   reviewBadge: { width: 34, height: 34, borderRadius: 12, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   body: { paddingHorizontal: spacing.md, paddingBottom: 20 },
-  lessonKicker: { color: colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 0.9, marginTop: 8 },
-  lessonTitle: { color: colors.ink, fontSize: 24, lineHeight: 30, fontWeight: '900', marginTop: 7, marginBottom: 17 },
+  lessonKicker: { color: colors.primary, fontSize: 14, fontWeight: '800', letterSpacing: 0.6, marginTop: 8 },
+  lessonTitle: { color: colors.ink, fontSize: 26, lineHeight: 32, fontWeight: '800', marginTop: 7, marginBottom: 17 },
   questionCard: { backgroundColor: colors.white, borderRadius: 21, padding: 17, borderWidth: 1, borderColor: colors.line },
-  questionCount: { color: colors.muted, fontSize: 9, fontWeight: '900', letterSpacing: 0.8 },
-  prompt: { color: colors.ink, fontSize: 17, lineHeight: 24, fontWeight: '800', marginTop: 9, marginBottom: 16 },
+  questionCount: { color: colors.muted, fontSize: 14, fontWeight: '800', letterSpacing: 0.5 },
+  prompt: { color: colors.ink, fontSize: 18, lineHeight: 26, fontWeight: '800', marginTop: 9, marginBottom: 16 },
   options: { gap: 9 },
   option: { minHeight: 53, flexDirection: 'row', alignItems: 'center', gap: 11, paddingHorizontal: 12, borderRadius: 15, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.white },
-  optionSelected: { borderWidth: 1.5, borderColor: colors.primary, backgroundColor: '#F8F7FF' },
-  optionLetter: { width: 26, height: 26, borderRadius: 9, textAlign: 'center', textAlignVertical: 'center', overflow: 'hidden', backgroundColor: colors.background, color: colors.muted, fontSize: 12, fontWeight: '900', paddingTop: 4 },
-  optionLetterSelected: { backgroundColor: colors.primary, color: colors.white },
-  optionText: { flex: 1, color: colors.ink, fontSize: 13, fontWeight: '700', lineHeight: 19 },
+  optionSelected: { borderWidth: 1.5, borderColor: colors.primary, backgroundColor: colors.primarySoft },
+  optionLetter: { width: 26, height: 26, borderRadius: 9, textAlign: 'center', textAlignVertical: 'center', overflow: 'hidden', backgroundColor: colors.background, color: colors.muted, fontSize: 14, fontWeight: '900', paddingTop: 4 },
+  optionLetterSelected: { backgroundColor: colors.primary, color: colors.onPrimary },
+  optionText: { flex: 1, color: colors.ink, fontSize: 15, fontWeight: '700', lineHeight: 21 },
   wordExercise: { gap: 12 },
-  answerTray: { minHeight: 68, flexDirection: 'row', flexWrap: 'wrap', alignContent: 'center', gap: 7, borderWidth: 1, borderStyle: 'dashed', borderColor: colors.primary, backgroundColor: '#FBFAFF', borderRadius: 14, padding: 10 },
-  trayPlaceholder: { color: colors.muted, fontSize: 11 },
+  answerTray: { minHeight: 68, flexDirection: 'row', flexWrap: 'wrap', alignContent: 'center', gap: 7, borderWidth: 1, borderStyle: 'dashed', borderColor: colors.primary, backgroundColor: colors.primarySoft, borderRadius: 14, padding: 10 },
+  trayPlaceholder: { color: colors.muted, fontSize: 13 },
   answerToken: { backgroundColor: colors.primarySoft, paddingHorizontal: 9, paddingVertical: 7, borderRadius: 9 },
-  answerTokenText: { color: colors.primaryDark, fontWeight: '800', fontSize: 12 },
+  answerTokenText: { color: colors.primaryDark, fontWeight: '800', fontSize: 14 },
   wordBank: { flexDirection: 'row', flexWrap: 'wrap', gap: 7 },
   wordChip: { paddingHorizontal: 10, paddingVertical: 9, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.line, borderRadius: 11 },
-  wordText: { color: colors.ink, fontWeight: '700', fontSize: 12 },
+  wordText: { color: colors.ink, fontWeight: '700', fontSize: 14 },
   usedWord: { backgroundColor: colors.background, borderColor: colors.background },
   usedWordText: { color: 'transparent' },
-  undoText: { color: colors.primary, fontSize: 11, fontWeight: '800', alignSelf: 'flex-start', paddingVertical: 4 },
+  undoText: { color: colors.primary, fontSize: 13, fontWeight: '800', alignSelf: 'flex-start', paddingVertical: 4 },
   matching: { flexDirection: 'row', gap: 8 },
   matchColumn: { flex: 1, gap: 8 },
   matchOption: { minHeight: 55, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 4, padding: 8, borderRadius: 12, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.white },
   matchSelected: { borderColor: colors.primary, backgroundColor: colors.primarySoft },
-  matchTarget: { borderColor: '#B9B5F1' },
+  matchTarget: { borderColor: colors.primary },
   matchDone: { backgroundColor: colors.greenSoft, borderColor: colors.greenSoft },
-  matchText: { flex: 1, color: colors.ink, fontSize: 10, lineHeight: 14, fontWeight: '700' },
-  matchHint: { color: colors.muted, fontSize: 11, textAlign: 'center', marginTop: 10 },
+  matchText: { flex: 1, color: colors.ink, fontSize: 13, lineHeight: 18, fontWeight: '700' },
+  matchHint: { color: colors.muted, fontSize: 13, textAlign: 'center', marginTop: 10 },
   feedback: { padding: 13, borderRadius: 15, marginTop: 14 },
   feedbackGood: { backgroundColor: colors.greenSoft },
   feedbackBad: { backgroundColor: colors.redSoft },
   feedbackTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   feedbackTitle: { fontSize: 14, fontWeight: '900' },
-  penalty: { color: colors.red, fontSize: 11, fontWeight: '700', marginTop: 7 },
-  correctAnswer: { color: colors.ink, fontSize: 12, lineHeight: 18, fontWeight: '800', marginTop: 7 },
-  explanation: { color: colors.ink, fontSize: 12, lineHeight: 18, marginTop: 7 },
-  source: { color: colors.muted, fontSize: 10, lineHeight: 15, marginTop: 7, fontStyle: 'italic' },
+  penalty: { color: colors.red, fontSize: 13, fontWeight: '700', marginTop: 7 },
+  correctAnswer: { color: colors.ink, fontSize: 14, lineHeight: 18, fontWeight: '800', marginTop: 7 },
+  explanation: { color: colors.ink, fontSize: 14, lineHeight: 18, marginTop: 7 },
+  source: { color: colors.muted, fontSize: 13, lineHeight: 15, marginTop: 7, fontStyle: 'italic' },
   bottom: { paddingHorizontal: spacing.md, paddingVertical: 12, paddingBottom: 26, backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.line },
   primaryButton: { minHeight: 52, borderRadius: 16, backgroundColor: colors.primary, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 9 },
-  primaryText: { color: colors.white, fontWeight: '900', fontSize: 15 },
+  primaryText: { color: colors.onPrimary, fontWeight: '800', fontSize: 16 },
   disabledButton: { backgroundColor: colors.locked },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 28, backgroundColor: colors.background },
   emptyHeart: { width: 70, height: 70, borderRadius: 24, backgroundColor: colors.redSoft, alignItems: 'center', justifyContent: 'center' },
   outTitle: { color: colors.ink, fontSize: 24, fontWeight: '900', marginTop: 18 },
-  outText: { color: colors.muted, textAlign: 'center', fontSize: 14, lineHeight: 22, marginTop: 9, marginBottom: 22 },
+  outText: { color: colors.muted, textAlign: 'center', fontSize: 15, lineHeight: 22, marginTop: 9, marginBottom: 22 },
 });
+}

@@ -7,3 +7,4 @@ export { ReadScreen } from './ReadScreen';
 export { ReviewScreen } from './ReviewScreen';
 export { MainShell } from './MainShell';
 export { LoadingScreen } from './LoadingScreen';
+export { ThemeSwitch } from './ThemeSwitch';

@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
 import { AppProvider } from '../context/AppContext';
-import { colors } from '../theme';
+import { ThemeProvider, useTheme } from '../context/ThemeContext';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -27,10 +27,21 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <AppProvider>
-        <StatusBar style="dark" />
-        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background }, animation: 'fade' }} />
-      </AppProvider>
+      <ThemeProvider>
+        <AppProvider>
+          <ThemedStack />
+        </AppProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
+  );
+}
+
+function ThemedStack() {
+  const { colors, mode } = useTheme();
+  return (
+    <>
+      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background }, animation: 'fade' }} />
+    </>
   );
 }

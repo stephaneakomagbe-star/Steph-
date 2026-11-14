@@ -1,12 +1,16 @@
+import { useMemo } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { LessonScreen, LoadingScreen } from '../../components';
 import { useFaithLingo } from '../../context/AppContext';
+import { useTheme } from '../../context/ThemeContext';
 import { getLessonById } from '../../data/coursesData';
-import { colors } from '../../theme';
-import { StyleSheet, Text, View } from 'react-native';
+import { Palette, sheet } from '../../theme';
+import { Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 export default function LessonRoute() {
+  const { colors, mode } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const { id, review } = useLocalSearchParams<{ id: string; review?: string }>();
   const router = useRouter();
   const { data, isReady, storageError, retryStorage, loseHeart, finishLesson } = useFaithLingo();
@@ -18,7 +22,7 @@ export default function LessonRoute() {
   if (!lesson) {
     return (
       <View style={styles.center}>
-        <StatusBar style="dark" />
+        <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
         <Text style={styles.message}>Cette leçon est introuvable.</Text>
         <Text accessibilityRole="button" onPress={() => router.replace('/')} style={styles.back}>Retour au parcours</Text>
       </View>
@@ -39,9 +43,11 @@ export default function LessonRoute() {
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(colors: Palette): any {
+  return sheet({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background, padding: 28 },
   message: { color: colors.ink, fontSize: 16, textAlign: 'center' },
   back: { color: colors.primary, fontSize: 15, fontWeight: '800', marginTop: 16 },
 });
+}
 
