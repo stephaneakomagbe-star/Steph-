@@ -36,7 +36,7 @@ export function ReviewScreen({ lessons, completedLessonIds, onRead, onReview }: 
               </Pressable>
               <Pressable accessibilityRole="button" onPress={() => onReview(lesson)} style={[styles.action, styles.actionPrimary]}>
                 <Text style={styles.actionPrimaryText}>Exercices</Text>
-                <ArrowRight size={13} color={colors.onPrimary} />
+                <ArrowRight size={13} color={colors.onAccent} />
               </Pressable>
             </View>
           </View>
@@ -73,8 +73,8 @@ function createStyles(colors: Palette): any {
   actions: { flexDirection: 'row', gap: 8, marginTop: 8 },
   action: { minHeight: 32, paddingHorizontal: 11, borderRadius: 10, borderWidth: 1, borderColor: colors.line, alignItems: 'center', justifyContent: 'center' },
   actionText: { color: colors.ink, fontSize: 13, fontWeight: '800' },
-  actionPrimary: { flexDirection: 'row', gap: 5, backgroundColor: colors.primary, borderColor: colors.primary },
-  actionPrimaryText: { color: colors.onPrimary, fontSize: 13, fontWeight: '800' },
+  actionPrimary: { flexDirection: 'row', gap: 5, backgroundColor: colors.accent, borderColor: colors.accent },
+  actionPrimaryText: { color: colors.onAccent, fontSize: 13, fontWeight: '800' },
   empty: { alignItems: 'center', paddingHorizontal: 24, paddingVertical: 28, borderRadius: 19, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.line },
   emptyIcon: { width: 52, height: 52, borderRadius: 18, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   emptyTitle: { color: colors.ink, fontSize: 15, fontWeight: '900', textAlign: 'center', marginTop: 14 },

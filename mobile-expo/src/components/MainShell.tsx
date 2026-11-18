@@ -1,8 +1,9 @@
 import { ReactNode, useMemo } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { BookOpen, Flame, Heart, Moon, RotateCcw, Sparkles, Sun, UserRound } from './icons';
+import { BookOpen, Flame, Gem, Heart, Moon, RotateCcw, Sun, UserRound } from './icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SoftPress } from './motion';
 import { Palette, sheet, spacing } from '../theme';
 import { useTheme } from '../context/ThemeContext';
 import { useFaithLingo } from '../context/AppContext';
@@ -28,17 +29,17 @@ export function MainShell({ activeTab, children }: { activeTab: Tab; children: R
           </View>
         </View>
         <View style={styles.headerActions}>
-        <Pressable
+        <SoftPress
           accessibilityRole="button"
           accessibilityLabel={mode === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
           onPress={() => setMode(mode === 'dark' ? 'light' : 'dark')}
           style={styles.themeButton}
         >
           {mode === 'dark' ? <Sun size={18} color={colors.gold} /> : <Moon size={18} color={colors.primary} />}
-        </Pressable>
+        </SoftPress>
         <View style={styles.stats}>
           {data.profile?.hideStreak ? null : <Stat icon={<Flame size={18} color={colors.orange} />} value={data.streak} />}
-          <Stat icon={<Sparkles size={18} color={colors.gold} />} value={data.xp} />
+          <Stat icon={<Gem size={18} color={colors.accent} />} value={data.xp} />
           <Stat icon={<Heart size={18} color={colors.red} />} value={data.hearts} />
         </View>
         </View>
@@ -64,31 +65,32 @@ function TabButton({ label, icon: Icon, active, onPress }: { label: string; icon
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   return (
-    <Pressable accessibilityRole="button" accessibilityState={{ selected: active }} onPress={onPress} style={styles.tab}>
-      <Icon size={19} color={active ? colors.primary : colors.muted} />
+    <SoftPress accessibilityRole="button" accessibilityState={{ selected: active }} onPress={onPress} style={[styles.tab, active && styles.tabActive]}>
+      <Icon size={22} color={active ? colors.primary : colors.locked} />
       <Text style={[styles.tabText, active && styles.activeTabText]}>{label}</Text>
-    </Pressable>
+    </SoftPress>
   );
 }
 
 function createStyles(colors: Palette): any {
   return sheet({
   root: { flex: 1, backgroundColor: colors.background },
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 10, paddingHorizontal: spacing.md, paddingTop: 10, paddingBottom: 12, backgroundColor: colors.white, borderBottomWidth: 1, borderBottomColor: colors.line },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 10, paddingHorizontal: spacing.md, paddingTop: 12, paddingBottom: 12, backgroundColor: colors.background },
   brandLine: { flexDirection: 'row', alignItems: 'center', gap: 10, flexShrink: 1 },
   brandMark: { width: 38, height: 38, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primary },
   headerActions: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   themeButton: { width: 38, height: 38, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
-  brand: { color: colors.ink, fontSize: 18, fontWeight: '800' },
+  brand: { color: colors.primaryDark, fontSize: 18, fontWeight: '800', letterSpacing: -0.3 },
   date: { color: colors.muted, fontSize: 13, textTransform: 'capitalize', marginTop: 1 },
   stats: { flexDirection: 'row', gap: 6 },
   stat: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 7, backgroundColor: colors.background, borderRadius: 13 },
   statText: { color: colors.ink, fontSize: 14, fontWeight: '800' },
   error: { paddingHorizontal: 14, paddingVertical: 7, backgroundColor: colors.warningBg, color: colors.warning, fontSize: 13 },
   content: { flex: 1 },
-  tabBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', paddingTop: 8, paddingBottom: 8, backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.line },
-  tab: { minWidth: 82, alignItems: 'center', justifyContent: 'center', gap: 3, paddingVertical: 3 },
-  tabText: { color: colors.muted, fontSize: 13, fontWeight: '700' },
+  tabBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', paddingTop: 8, paddingBottom: 8, paddingHorizontal: 10, backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.line },
+  tab: { minWidth: 96, minHeight: 52, borderRadius: 16, alignItems: 'center', justifyContent: 'center', gap: 2, paddingVertical: 6 },
+  tabActive: { backgroundColor: colors.primarySoft },
+  tabText: { color: colors.locked, fontSize: 12, fontWeight: '700' },
   activeTabText: { color: colors.primary },
 });
 }

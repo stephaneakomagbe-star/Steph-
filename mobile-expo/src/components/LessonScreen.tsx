@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CompletionScreen } from './CompletionScreen';
 import { useTheme } from '../context/ThemeContext';
 import { ChoiceQuestion, Lesson, MatchingQuestion, Question, TrueFalseQuestion, WordBankQuestion } from '../data/coursesData';
+import { Reveal, SoftPress } from './motion';
 import { Palette, sheet, spacing } from '../theme';
 
 type Phase = 'answering' | 'feedback' | 'complete' | 'out-of-hearts';
@@ -224,7 +225,7 @@ export function LessonScreen({ lesson, review, hearts, onLoseHeart, onComplete, 
             />
           )}
           {state.phase === 'feedback' ? (
-            <View style={[styles.feedback, state.answerCorrect ? styles.feedbackGood : styles.feedbackBad]}>
+            <Reveal style={[styles.feedback, state.answerCorrect ? styles.feedbackGood : styles.feedbackBad]}>
               <View style={styles.feedbackTitleRow}>
                 {state.answerCorrect ? <CheckCircle2 size={20} color={colors.green} /> : <X size={20} color={colors.red} />}
                 <Text style={[styles.feedbackTitle, { color: state.answerCorrect ? colors.green : colors.red }]}>
@@ -235,7 +236,7 @@ export function LessonScreen({ lesson, review, hearts, onLoseHeart, onComplete, 
               {!state.answerCorrect ? <Text style={styles.correctAnswer}>Réponse : {getCorrectAnswer(question)}</Text> : null}
               <Text style={styles.explanation}>{question.explanation}</Text>
               <Text style={styles.source}>{questionSource(question)}</Text>
-            </View>
+            </Reveal>
           ) : null}
         </View>
         {question.type === 'matching' && state.phase === 'answering' ? (
@@ -245,12 +246,12 @@ export function LessonScreen({ lesson, review, hearts, onLoseHeart, onComplete, 
 
       <View style={styles.bottom}>
         {state.phase === 'feedback' ? (
-          <Pressable onPress={() => dispatch({ type: 'next', total: lesson.questions.length, review })} style={styles.primaryButton}>
+          <SoftPress onPress={() => dispatch({ type: 'next', total: lesson.questions.length, review })} style={styles.primaryButton}>
             <Text style={styles.primaryText}>{state.livesRemaining === 0 && !review ? 'Terminer' : state.questionIndex === lesson.questions.length - 1 ? 'Voir le résultat' : 'Continuer'}</Text>
-            <ArrowRight size={18} color={colors.onPrimary} />
-          </Pressable>
+            <ArrowRight size={18} color={colors.onAccent} />
+          </SoftPress>
         ) : (
-          <Pressable
+          <SoftPress
             disabled={!complete}
             onPress={() => {
               const isCorrect = answerIsCorrect(question, state);
@@ -260,8 +261,8 @@ export function LessonScreen({ lesson, review, hearts, onLoseHeart, onComplete, 
             style={[styles.primaryButton, !complete && styles.disabledButton]}
           >
             <Text style={styles.primaryText}>Vérifier</Text>
-            <Check size={18} color={colors.onPrimary} />
-          </Pressable>
+            <Check size={18} color={colors.onAccent} />
+          </SoftPress>
         )}
       </View>
     </SafeAreaView>
@@ -383,7 +384,7 @@ function getCorrectAnswer(question: Question): string {
   if (question.type === 'choice') return question.options[question.answerIndex];
   if (question.type === 'true-false') return question.answer ? 'Vrai' : 'Faux';
   if (question.type === 'word-bank') return question.answerWords.join(' ');
-  return question.pairs.map((pair) => `${pair.left} → ${pair.right}`).join(' · ');
+  return question.pairs.map((pair) => `${pair.left} — ${pair.right}`).join(' · ');
 }
 
 export { CompletionScreen };
@@ -438,8 +439,8 @@ function createStyles(colors: Palette): any {
   explanation: { color: colors.ink, fontSize: 14, lineHeight: 18, marginTop: 7 },
   source: { color: colors.muted, fontSize: 13, lineHeight: 15, marginTop: 7, fontStyle: 'italic' },
   bottom: { paddingHorizontal: spacing.md, paddingVertical: 12, paddingBottom: 26, backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.line },
-  primaryButton: { minHeight: 52, borderRadius: 16, backgroundColor: colors.primary, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 9 },
-  primaryText: { color: colors.onPrimary, fontWeight: '800', fontSize: 16 },
+  primaryButton: { minHeight: 52, borderRadius: 16, backgroundColor: colors.accent, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 9 },
+  primaryText: { color: colors.onAccent, fontWeight: '800', fontSize: 16 },
   disabledButton: { backgroundColor: colors.locked },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 28, backgroundColor: colors.background },
   emptyHeart: { width: 70, height: 70, borderRadius: 24, backgroundColor: colors.redSoft, alignItems: 'center', justifyContent: 'center' },

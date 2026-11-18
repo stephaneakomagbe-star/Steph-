@@ -86,7 +86,7 @@ function createStyles(colors: Palette): any {
   sourcesTitle: { color: colors.ink, fontSize: 14, fontWeight: '900', marginBottom: 8 },
   sourceLine: { color: colors.muted, fontSize: 14, lineHeight: 18, marginBottom: 4 },
   bottom: { paddingHorizontal: spacing.md, paddingVertical: 12, paddingBottom: 24, backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.line },
-  primaryButton: { minHeight: 52, borderRadius: 16, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
-  primaryText: { color: colors.onPrimary, fontWeight: '800', fontSize: 15 },
+  primaryButton: { minHeight: 52, borderRadius: 16, backgroundColor: colors.accent, alignItems: 'center', justifyContent: 'center' },
+  primaryText: { color: colors.onAccent, fontWeight: '800', fontSize: 15 },
 });
 }

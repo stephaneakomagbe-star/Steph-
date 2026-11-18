@@ -1,6 +1,7 @@
 export type ThemeMode = 'light' | 'dark';
 
 export type Palette = {
+  stage: string;
   background: string;
   white: string;
   ink: string;
@@ -9,6 +10,9 @@ export type Palette = {
   primaryDark: string;
   primarySoft: string;
   onPrimary: string;
+  accent: string;
+  onAccent: string;
+  accentSoft: string;
   hero: string;
   heroText: string;
   heroMuted: string;
@@ -27,56 +31,72 @@ export type Palette = {
 };
 
 export const lightColors: Palette = {
-  background: '#F3F0E8',
-  white: '#FFFCF7',
-  ink: '#1B2340',
-  muted: '#5C6478',
-  primary: '#4338CA',
-  primaryDark: '#312E81',
-  primarySoft: '#E7E4FB',
+  stage: '#EBE6DC',
+  background: '#F7F5F0',
+  white: '#FFFFFF',
+  ink: '#1E1B4B',
+  muted: '#514C6B',
+  primary: '#2E236F',
+  primaryDark: '#1E1B4B',
+  primarySoft: '#E8E4F6',
   onPrimary: '#FFFFFF',
-  hero: '#1B2340',
-  heroText: '#F7F4EE',
-  heroMuted: '#C9CEDB',
-  heroSoft: '#FFFFFF22',
-  green: '#1F7A62',
-  greenSoft: '#E3F5ED',
-  gold: '#C9842A',
-  goldSoft: '#FFF1D6',
-  orange: '#E07A24',
-  red: '#D14B5A',
-  redSoft: '#FDECEE',
-  line: '#E3DED2',
-  locked: '#A7ADBA',
-  warning: '#7A5416',
-  warningBg: '#FFF4D8',
+  accent: '#D97706',
+  onAccent: '#1E1B4B',
+  accentSoft: '#FEF3C7',
+  hero: '#1E1B4B',
+  heroText: '#F7F5F0',
+  heroMuted: '#D5D0E4',
+  heroSoft: '#FFFFFF1F',
+  green: '#0F766E',
+  greenSoft: '#D1FAE5',
+  gold: '#D97706',
+  goldSoft: '#FEF3C7',
+  orange: '#F59E0B',
+  red: '#BE123C',
+  redSoft: '#FDE8EE',
+  line: '#E6E0D4',
+  locked: '#9A94A8',
+  warning: '#92400E',
+  warningBg: '#FEF3C7',
 };
 
 export const darkColors: Palette = {
-  background: '#10131B',
-  white: '#1A1F2C',
-  ink: '#F4F1EA',
-  muted: '#A7AEC0',
-  primary: '#A5A0FF',
-  primaryDark: '#D9D6FF',
-  primarySoft: '#2A2750',
-  onPrimary: '#161226',
-  hero: '#23283A',
-  heroText: '#F7F4EE',
-  heroMuted: '#C5CAD8',
+  stage: '#0B0A12',
+  background: '#141225',
+  white: '#1E1A33',
+  ink: '#F7F5F0',
+  muted: '#C8C2DC',
+  primary: '#C4B5FD',
+  primaryDark: '#EDE9FE',
+  primarySoft: '#2C2654',
+  onPrimary: '#1E1B4B',
+  accent: '#F59E0B',
+  onAccent: '#1E1B4B',
+  accentSoft: '#3B2A12',
+  hero: '#2E236F',
+  heroText: '#F7F5F0',
+  heroMuted: '#DDD7F0',
   heroSoft: '#FFFFFF18',
-  green: '#7DDCB4',
-  greenSoft: '#17352C',
-  gold: '#E2B15A',
-  goldSoft: '#3A2E18',
-  orange: '#F0A15A',
-  red: '#F08A96',
-  redSoft: '#3A2228',
-  line: '#2C3344',
-  locked: '#6E7588',
-  warning: '#F0D7A2',
-  warningBg: '#3A2E18',
+  green: '#6EE7B7',
+  greenSoft: '#14352C',
+  gold: '#F59E0B',
+  goldSoft: '#3B2A12',
+  orange: '#FBBF24',
+  red: '#FB7185',
+  redSoft: '#3A1D28',
+  line: '#312B4A',
+  locked: '#8B84A3',
+  warning: '#FCD34D',
+  warningBg: '#3B2A12',
 };
+
+export const fontFamily = 'PlusJakartaSans';
+
+let brandFontReady = false;
+
+export function enableBrandFont() {
+  brandFontReady = true;
+}
 
 export const spacing = { xs: 6, sm: 10, md: 16, lg: 22, xl: 30 };
 
@@ -85,5 +105,16 @@ export function paletteFor(mode: ThemeMode): Palette {
 }
 
 export function sheet(styles: Record<string, object>) {
-  return styles;
+  if (!brandFontReady) return styles;
+  const next: Record<string, object> = {};
+  for (const [key, value] of Object.entries(styles)) {
+    const style = value as { fontSize?: number; fontWeight?: string | number };
+    if (style && (style.fontSize != null || style.fontWeight != null)) {
+      const weight = style.fontWeight === '900' || style.fontWeight === 900 ? '800' : style.fontWeight;
+      next[key] = { ...style, fontFamily, fontWeight: weight };
+    } else {
+      next[key] = value;
+    }
+  }
+  return next;
 }

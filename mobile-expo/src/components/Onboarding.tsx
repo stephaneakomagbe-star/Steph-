@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
-import { ArrowRight, BookOpen, Check, Clock3, Compass, GraduationCap, Moon, MoonStar, Sprout, Sparkles } from './icons';
+import { ArrowRight, BookBible, BookOpen, BookQuran, Check, Clock3, GraduationCap, HandsPraying, MoonStar, Sprout, Sparkles } from './icons';
+import { ProgressBar, Reveal, SoftPress } from './motion';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeSwitch } from './ThemeSwitch';
 import { useTheme } from '../context/ThemeContext';
@@ -8,9 +9,9 @@ import { CourseId, GoalMinutes, Level, Profile } from '../data/coursesData';
 import { Palette, sheet, spacing } from '../theme';
 
 const COURSE_OPTIONS: { id: CourseId; title: string; detail: string; Icon: typeof BookOpen }[] = [
-  { id: 'bible', title: 'Parcours Bible', detail: 'Récits, enseignements et repères bibliques', Icon: BookOpen },
-  { id: 'coran', title: 'Parcours Coran', detail: 'Sourates, repères de lecture et vocabulaire', Icon: Moon },
-  { id: 'decouverte', title: 'Découverte', detail: 'Explorer les deux traditions à son rythme', Icon: Compass },
+  { id: 'bible', title: 'Parcours Bible', detail: 'Récits, enseignements et repères bibliques', Icon: BookBible },
+  { id: 'coran', title: 'Parcours Coran', detail: 'Sourates, repères de lecture et vocabulaire', Icon: BookQuran },
+  { id: 'decouverte', title: 'Découverte', detail: 'Explorer les deux traditions à son rythme', Icon: HandsPraying },
 ];
 
 const LEVELS: { id: Level; title: string; description: string }[] = [
@@ -49,8 +50,9 @@ export function Onboarding({ onFinish }: { onFinish: (profile: Profile) => void 
           <ThemeSwitch compact />
           <View style={styles.stepCount}><Text style={styles.stepCountText}>{step + 1} / 3</Text></View>
         </View>
-        <View style={styles.progressTrack}><View style={[styles.progressFill, { width: `${((step + 1) / 3) * 100}%` }]} /></View>
+        <View style={styles.progressTrack}><ProgressBar progress={(step + 1) / 3} color={colors.primary} track={colors.line} /></View>
 
+        <Reveal key={step}>
         {step === 0 ? (
           <>
             <View style={styles.welcomePill}><Sparkles size={14} color={colors.gold} /><Text style={styles.pillText}>UN MOMENT POUR APPRENDRE</Text></View>
@@ -141,11 +143,12 @@ export function Onboarding({ onFinish }: { onFinish: (profile: Profile) => void 
             </View>
           </>
         )}
+        </Reveal>
 
-        <Pressable accessibilityRole="button" onPress={continueOnboarding} style={styles.continueButton}>
+        <SoftPress accessibilityRole="button" onPress={continueOnboarding} style={styles.continueButton}>
           <Text style={styles.continueText}>{step === 2 ? 'Commencer mon parcours' : 'Continuer'}</Text>
-          <ArrowRight size={19} color={colors.onPrimary} />
-        </Pressable>
+          <ArrowRight size={19} color={colors.onAccent} />
+        </SoftPress>
         {step > 0 ? <Text onPress={() => setStep(step - 1)} style={styles.back}>Retour</Text> : null}
       </ScrollView>
     </SafeAreaView>
@@ -156,14 +159,14 @@ function ChoiceCard({ selected, onPress, title, description, Icon }: { selected:
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   return (
-    <Pressable accessibilityRole="button" accessibilityState={{ selected }} onPress={onPress} style={[styles.choiceCard, selected && styles.selectedChoice]}>
+    <SoftPress accessibilityRole="button" accessibilityState={{ selected }} onPress={onPress} style={[styles.choiceCard, selected && styles.selectedChoice]}>
       <View style={[styles.choiceIcon, selected && styles.choiceIconSelected]}><Icon size={20} color={colors.primary} /></View>
       <View style={styles.choiceCopy}>
         <Text style={styles.cardTitle}>{title}</Text>
         <Text style={styles.cardDescription}>{description}</Text>
       </View>
       <View style={[styles.radio, selected && styles.radioSelected]}>{selected ? <Check size={14} color={colors.onPrimary} /> : null}</View>
-    </Pressable>
+    </SoftPress>
   );
 }
 
@@ -176,8 +179,7 @@ function createStyles(colors: Palette): any {
   brand: { flex: 1, color: colors.ink, fontWeight: '900', fontSize: 19, letterSpacing: -0.5 },
   stepCount: { paddingHorizontal: 11, paddingVertical: 7, borderRadius: 15, backgroundColor: colors.primarySoft },
   stepCountText: { color: colors.primary, fontWeight: '800', fontSize: 14 },
-  progressTrack: { height: 5, backgroundColor: colors.line, borderRadius: 8, marginTop: 20, marginBottom: 29, overflow: 'hidden' },
-  progressFill: { height: '100%', backgroundColor: colors.primary, borderRadius: 8 },
+  progressTrack: { marginTop: 20, marginBottom: 29 },
   welcomePill: { flexDirection: 'row', alignItems: 'center', gap: 7, alignSelf: 'flex-start', borderRadius: 14, backgroundColor: colors.goldSoft, paddingHorizontal: 11, paddingVertical: 7 },
   pillText: { color: colors.warning, fontSize: 13, fontWeight: '900', letterSpacing: 0.6 },
   title: { color: colors.ink, fontSize: 30, lineHeight: 38, letterSpacing: -0.6, fontWeight: '800', marginTop: 18 },
@@ -198,10 +200,10 @@ function createStyles(colors: Palette): any {
   optional: { color: colors.muted, fontSize: 14, lineHeight: 18, marginTop: 17 },
   goalRow: { flexDirection: 'row', gap: 9, marginBottom: 16 },
   goalCard: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.white, borderRadius: 17, borderWidth: 1.5, borderColor: colors.line, paddingVertical: 18, gap: 5 },
-  selectedGoal: { backgroundColor: colors.primary, borderColor: colors.primary },
+  selectedGoal: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
   goalTitle: { color: colors.ink, fontSize: 19, fontWeight: '900' },
   goalDetail: { color: colors.muted, fontSize: 13 },
-  selectedText: { color: colors.onPrimary },
+  selectedText: { color: colors.primary },
   reminderCard: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, backgroundColor: colors.white, borderRadius: 17, borderWidth: 1, borderColor: colors.line },
   reminderIcon: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 14, backgroundColor: colors.primarySoft },
   reminderCopy: { flex: 1, gap: 4 },
@@ -214,8 +216,8 @@ function createStyles(colors: Palette): any {
   selectedTime: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
   timeText: { color: colors.muted, fontSize: 13, fontWeight: '800' },
   selectedTimeText: { color: colors.primary },
-  continueButton: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, backgroundColor: colors.primary, borderRadius: 16, paddingVertical: 16, marginTop: 22 },
-  continueText: { color: colors.onPrimary, fontSize: 16, fontWeight: '800' },
+  continueButton: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, backgroundColor: colors.accent, borderRadius: 16, paddingVertical: 16, marginTop: 22 },
+  continueText: { color: colors.onAccent, fontSize: 16, fontWeight: '800' },
   back: { textAlign: 'center', color: colors.muted, fontWeight: '700', paddingVertical: 16 },
 });
 }

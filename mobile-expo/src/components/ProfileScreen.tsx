@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Pressable, ScrollView, Switch, Text, View } from 'react-native';
-import { Bell, BookOpen, Flame, ShieldCheck, Sparkles } from './icons';
+import { Bell, BookOpen, Flame, Gem, ShieldCheck } from './icons';
 import { ThemeSwitch } from './ThemeSwitch';
 import { useTheme } from '../context/ThemeContext';
 import { CourseId, GoalMinutes, getCourseLabel, getLevelLabel, Level, Profile } from '../data/coursesData';
@@ -30,7 +30,7 @@ export function ProfileScreen({ profile, reminderEnabled, xp, streak, onUpdate, 
         <Text style={styles.title}>Mon espace</Text>
         <Text style={styles.subtitle}>Un parcours qui vous ressemble.</Text>
         <View style={styles.stats}>
-          <View style={styles.stat}><Sparkles size={16} color={colors.gold} /><Text style={styles.statNumber}>{xp}</Text><Text style={styles.statLabel}>XP</Text></View>
+          <View style={styles.stat}><Gem size={16} color={colors.accent} /><Text style={styles.statNumber}>{xp}</Text><Text style={styles.statLabel}>XP</Text></View>
           {profile.hideStreak ? null : (
             <View style={styles.stat}><Flame size={16} color={colors.orange} /><Text style={styles.statNumber}>{streak}</Text><Text style={styles.statLabel}>jours de suite</Text></View>
           )}
@@ -146,9 +146,9 @@ function createStyles(colors: Palette): any {
   optionTextActive: { color: colors.primary },
   goalRow: { flexDirection: 'row', gap: 8 },
   goal: { flex: 1, alignItems: 'center', paddingVertical: 11, borderRadius: 11, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.line },
-  goalActive: { backgroundColor: colors.primary, borderColor: colors.primary },
+  goalActive: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
   goalText: { color: colors.muted, fontSize: 14, fontWeight: '900' },
-  goalTextActive: { color: colors.onPrimary },
+  goalTextActive: { color: colors.primary },
   reminder: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 17 },
   reminderIcon: { width: 37, height: 37, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primarySoft },
   reminderCopy: { flex: 1 },

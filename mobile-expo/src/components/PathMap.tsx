@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
-import { ArrowRight, BookOpen, Check, Clock3, Flame, Heart, Lock, Sparkles } from './icons';
+import { ArrowRight, BookBible, BookOpen, BookQuran, Check, Clock3, Flame, HandsPraying, Heart, Lock, Sparkles } from './icons';
+import { ProgressBar, Reveal, SoftPress } from './motion';
 import { useTheme } from '../context/ThemeContext';
 import { CourseId, getCourseLabel, getCourseLessons, getLevelLabel, GoalMinutes, Lesson, Level } from '../data/coursesData';
 import { Palette, sheet, spacing } from '../theme';
@@ -28,6 +29,7 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
 
   return (
     <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <Reveal>
       <View style={styles.hero}>
         <View style={styles.heroTop}>
           <View style={styles.heroPill}><Sparkles size={14} color={colors.gold} /><Text style={styles.heroPillText}>Votre espace</Text></View>
@@ -36,25 +38,26 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
         <Text style={styles.heroTitle}>Un moment pour{'\n'}nourrir sa curiosité.</Text>
         <Text style={styles.heroBody}>Des leçons courtes, des textes sourcés et un rythme qui vous ressemble.</Text>
         <View style={styles.progressLine}>
-          <View style={styles.progressTrack}><View style={[styles.progressFill, { width: `${progress * 100}%` }]} /></View>
+          <ProgressBar flex progress={progress} color={colors.gold} track={colors.heroSoft} />
           <Text style={styles.progressLabel}>{completed}/{lessons.length} leçons</Text>
         </View>
         {nextLesson ? (
           hearts > 0 ? (
-            <Pressable accessibilityRole="button" onPress={() => onStart(nextLesson, false)} style={styles.heroCta}>
+            <SoftPress accessibilityRole="button" onPress={() => onStart(nextLesson, false)} style={styles.heroCta}>
               <Text style={styles.heroCtaText}>Continuer · {nextLesson.title}</Text>
               <ArrowRight size={16} color={colors.hero} />
-            </Pressable>
+            </SoftPress>
           ) : (
-            <Pressable accessibilityRole="button" onPress={() => onRead(nextLesson)} style={styles.heroCta}>
+            <SoftPress accessibilityRole="button" onPress={() => onRead(nextLesson)} style={styles.heroCta}>
               <Text style={styles.heroCtaText}>Lire sans exercice · {nextLesson.title}</Text>
               <ArrowRight size={16} color={colors.hero} />
-            </Pressable>
+            </SoftPress>
           )
         ) : (
           <View style={styles.heroDone}><Text style={styles.heroDoneText}>Module terminé. Relisez à votre rythme.</Text></View>
         )}
       </View>
+      </Reveal>
 
       <Text style={styles.sectionTitle}>Choisir un parcours</Text>
       <View style={styles.courseRow}>
@@ -70,7 +73,7 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
           <Text style={styles.moduleEyebrow}>{getCourseLabel(course).toUpperCase()} · {getLevelLabel(level).toUpperCase()}</Text>
           <Text style={styles.moduleTitle}>Premiers repères</Text>
         </View>
-        <View style={styles.moduleIcon}><BookOpen size={19} color={colors.primary} /></View>
+        <View style={styles.moduleIcon}>{course === 'bible' ? <BookBible size={20} color={colors.primary} /> : course === 'coran' ? <BookQuran size={20} color={colors.primary} /> : <HandsPraying size={20} color={colors.primary} />}</View>
       </View>
       <Text style={styles.moduleDescription}>Avancez dans l’ordre recommandé ; chaque étape s’ouvre après la précédente.</Text>
 
@@ -83,8 +86,8 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
           const canRead = isUnlocked && !canPractice;
           const available = canPractice || canRead;
           return (
-            <View key={lesson.id} style={[styles.lessonRow, index % 2 === 0 ? styles.rowLeft : styles.rowRight]}>
-              <Pressable
+            <Reveal key={lesson.id} delay={Math.min(index, 6) * 45} style={[styles.lessonRow, index % 2 === 0 ? styles.rowLeft : styles.rowRight]}>
+              <SoftPress
                 disabled={!available}
                 accessibilityRole="button"
                 accessibilityState={{ disabled: !available }}
@@ -103,8 +106,8 @@ export function PathMap({ course, level, dailyGoal, hearts, completedLessonIds, 
                   <Text numberOfLines={2} style={styles.lessonSubtitle}>{lesson.subtitle}</Text>
                 </View>
                 {isCurrent ? <ArrowRight size={17} color={colors.primary} /> : null}
-              </Pressable>
-            </View>
+              </SoftPress>
+            </Reveal>
           );
         })}
       </View>
